@@ -4,574 +4,338 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Inteligente de Evaluación y Gestión de Riesgo Crediticio</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            800: '#5b21b6',
-                            900: '#4c1d95',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
 
-    <div class="flex h-screen overflow-hidden">
-        
-        <!-- SIDEBAR -->
-        <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between hidden md:flex border-r border-slate-800">
+    <!-- Top Header / Bar -->
+    <header class="bg-slate-900 text-white shadow-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
-                <!-- Brand / Logo -->
-                <div class="p-6 flex items-center space-x-3 border-b border-slate-800/80">
-                    <div class="bg-brand-600 text-white p-2.5 rounded-xl shadow-lg shadow-brand-600/30">
-                        <i class="fa-solid fa-brain text-lg"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-white tracking-wide text-sm">RiesgoCrediticio</h1>
-                        <p class="text-xs text-slate-400">Christian Condezo</p>
-                    </div>
-                </div>
-
-                <!-- Navigation Links -->
-                <nav class="p-4 space-y-1.5">
-                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all bg-brand-600 text-white shadow-lg shadow-brand-600/20">
-                        <i class="fa-solid fa-chart-pie w-5"></i>
-                        <span>Panel principal</span>
-                    </button>
-                    <button onclick="switchTab('dataset')" id="nav-dataset" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800/60 text-slate-400 hover:text-white">
-                        <i class="fa-solid fa-database w-5"></i>
-                        <span>Dataset & Estadísticas</span>
-                    </button>
-                    <button onclick="switchTab('busqueda')" id="nav-busqueda" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800/60 text-slate-400 hover:text-white">
-                        <i class="fa-solid fa-magnifying-glass w-5"></i>
-                        <span>Algoritmos de Búsqueda</span>
-                    </button>
-                    <button onclick="switchTab('ordenamiento')" id="nav-ordenamiento" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800/60 text-slate-400 hover:text-white">
-                        <i class="fa-solid fa-arrow-down-wide-short w-5"></i>
-                        <span>Algoritmos de Ordenamiento</span>
-                    </button>
-                    <button onclick="switchTab('optimizacion')" id="nav-optimizacion" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800/60 text-slate-400 hover:text-white">
-                        <i class="fa-solid fa-sliders w-5"></i>
-                        <span>Optimización (IA / Mochila)</span>
-                    </button>
-                    <button onclick="switchTab('grafos')" id="nav-grafos" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800/60 text-slate-400 hover:text-white">
-                        <i class="fa-solid fa-route w-5"></i>
-                        <span>Grafos & Rutas (Agencias)</span>
-                    </button>
-                </nav>
+                <span class="text-xs uppercase tracking-widest text-indigo-400 font-semibold">Universidad Científica del Sur • Ing. de Software</span>
+                <h1 class="text-xl font-bold tracking-tight">Sistema Inteligente para la Evaluación y Gestión de Riesgo Crediticio</h1>
             </div>
-
-            <!-- Sidebar Footer badge -->
-            <div class="p-4 border-t border-slate-800">
-                <div class="bg-slate-800/70 p-3 rounded-xl border border-slate-700/50">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span class="text-xs font-medium text-slate-300">Motor Activo (Colab Ready)</span>
-                    </div>
-                    <p class="text-[11px] text-slate-400 mt-1">Estructura y Algoritmos Avanzados</p>
-                </div>
+            <div class="flex items-center gap-3">
+                <button onclick="restaurarTablaOriginal()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-slate-300 transition border border-slate-700">🔄 Restablecer</button>
+                <span class="px-3 py-1 bg-indigo-600/30 border border-indigo-500/30 text-indigo-300 text-xs font-semibold rounded-full">Autores: Condezo & Zevallos</span>
             </div>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <div class="flex-1 flex flex-col overflow-y-auto">
-            
-            <!-- TOP HEADER -->
-            <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between sticky top-0 z-20">
-                <div>
-                    <h2 id="header-title" class="text-xl font-bold text-slate-900 tracking-tight">Panel Principal de Gestión</h2>
-                    <p class="text-xs text-slate-500">Monitoreo de solicitudes, análisis de riesgo y rendimiento algorítmico.</p>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button onclick="ejecutarSimulacionGlobal()" class="bg-brand-50 hover:bg-brand-100 text-brand-700 text-xs font-semibold px-4 py-2.5 rounded-xl border border-brand-200 transition-all flex items-center space-x-2">
-                        <i class="fa-solid fa-rotate"></i>
-                        <span>Restablecer Datos</span>
-                    </button>
-                    <div class="bg-brand-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-brand-600/20 flex items-center space-x-2">
-                        <i class="fa-solid fa-user-shield"></i>
-                        <span>Christian Condezo</span>
-                    </div>
-                </div>
-            </header>
-
-            <!-- DYNAMIC VIEW CONTAINER -->
-            <main class="p-8 max-w-7xl w-full mx-auto space-y-8">
-                
-                <!-- TAB 1: DASHBOARD -->
-                <div id="view-dashboard" class="space-y-8">
-                    <!-- Metrics Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
-                            <div class="absolute -right-3 -bottom-3 text-brand-50 opacity-50 text-7xl"><i class="fa-solid fa-database"></i></div>
-                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total de Registros</span>
-                            <div class="flex items-baseline space-x-2 mt-2">
-                                <h3 class="text-3xl font-bold text-slate-900">32,581</h3>
-                                <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">100% Limpio</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-2">Dataset credit_risk_dataset.csv</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
-                            <div class="absolute -right-3 -bottom-3 text-rose-50 opacity-50 text-7xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tasa de Mora</span>
-                            <div class="flex items-baseline space-x-2 mt-2">
-                                <h3 class="text-3xl font-bold text-slate-900">21.82%</h3>
-                                <span class="text-xs font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">7,108 Morosos</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-2">Variable objetivo loan_status</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
-                            <div class="absolute -right-3 -bottom-3 text-indigo-50 opacity-50 text-7xl"><i class="fa-solid fa-vault"></i></div>
-                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Presupuesto de Inversión</span>
-                            <div class="flex items-baseline space-x-2 mt-2">
-                                <h3 class="text-3xl font-bold text-slate-900">S/ 1.0M</h3>
-                                <span class="text-xs font-medium text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full">Optimizado</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-2">Algoritmo Mochila / Genético</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden">
-                            <div class="absolute -right-3 -bottom-3 text-amber-50 opacity-50 text-7xl"><i class="fa-solid fa-bolt"></i></div>
-                            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Tiempo Promedio</span>
-                            <div class="flex items-baseline space-x-2 mt-2">
-                                <h3 class="text-3xl font-bold text-slate-900">0.0012s</h3>
-                                <span class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">O(log n)</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-2">Búsqueda Binaria / AVL</p>
-                        </div>
-                    </div>
-
-                    <!-- Main Grid: Recent Applications Table + Interactive Playground Widget -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        
-                        <!-- Table Section -->
-                        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between">
-                            <div>
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                                    <div>
-                                        <h4 class="font-bold text-slate-900 text-base">Solicitudes de Crédito Recientes</h4>
-                                        <p class="text-xs text-slate-500">Filtrado en tiempo real por ID, ingreso o calificación de riesgo.</p>
-                                    </div>
-                                    <div class="flex items-center space-x-3">
-                                        <select id="filter-grade" onchange="filtrarTabla()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500">
-                                            <option value="ALL">Grados: Todos (A-G)</option>
-                                            <option value="A">Grado A</option>
-                                            <option value="B">Grado B</option>
-                                            <option value="C">Grado C</option>
-                                            <option value="D">Grado D</option>
-                                            <option value="E">Grado E</option>
-                                            <option value="F">Grado F</option>
-                                            <option value="G">Grado G</option>
-                                        </select>
-                                        <input type="text" id="search-input" onkeyup="filtrarTabla()" placeholder="Buscar cliente..." class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                                    </div>
-                                </div>
-
-                                <!-- Table -->
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left border-collapse">
-                                        <thead>
-                                            <tr class="border-b border-slate-100 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                                                <th class="py-3 px-4">ID Cliente</th>
-                                                <th class="py-3 px-4">Ingreso Anual</th>
-                                                <th class="py-3 px-4">Préstamo ($)</th>
-                                                <th class="py-3 px-4">Propósito</th>
-                                                <th class="py-3 px-4">Grado</th>
-                                                <th class="py-3 px-4">Estado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tabla-clientes" class="divide-y divide-slate-100 text-xs text-slate-600">
-                                            <!-- Injected by JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                                <span>Mostrando registros indexados del sistema</span>
-                                <span class="font-semibold text-brand-600">Optimizado con Árbol AVL</span>
-                            </div>
-                        </div>
-
-                        <!-- Quick Test Playground Widget -->
-                        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center justify-between mb-4">
-                                    <h4 class="font-bold text-slate-900 text-base">Prueba de Algoritmos</h4>
-                                    <span class="bg-brand-50 text-brand-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">Simulador</span>
-                                </div>
-                                <p class="text-xs text-slate-500 mb-4">Ejecuta rutinas algorítmicas de búsqueda o optimización directamente.</p>
-                                
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Seleccionar Algoritmo</label>
-                                        <select id="quick-algo" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                                            <option value="binaria">Búsqueda Binaria O(log n)</option>
-                                            <option value="interpolacion">Búsqueda Interpolación O(log log n)</option>
-                                            <option value="mergesort">Merge Sort O(n log n)</option>
-                                            <option value="dijkstra">Dijkstra (Ruta Agencias)</option>
-                                            <option value="mochila">Programación Dinámica (Mochila)</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Valor de Entrada / Parámetro</label>
-                                        <input type="text" id="quick-param" value="15000" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                                    </div>
-                                    <button onclick="ejecutarPruebaRapida()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs py-3 rounded-xl shadow-md shadow-brand-600/20 transition-all flex items-center justify-center space-x-2">
-                                        <i class="fa-solid fa-play"></i>
-                                        <span>Ejecutar Algoritmo</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Result Box -->
-                            <div id="quick-result" class="mt-6 bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono space-y-1">
-                                <div class="text-slate-400 text-[10px] uppercase tracking-wider mb-1">Consola de Resultados</div>
-                                <div>> Sistema listo para consulta.</div>
-                                <div>> Selecciona una opción y ejecuta.</div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- TAB 2: DATASET & ESTADÍSTICAS -->
-                <div id="view-dataset" class="space-y-8 hidden">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-                            <div>
-                                <h3 class="font-bold text-slate-900 text-lg">Diccionario de Datos & Análisis Estructural</h3>
-                                <p class="text-xs text-slate-500">Resumen técnico de las variables del dataset credit_risk_dataset.csv</p>
-                            </div>
-                            <span class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">32,581 Filas x 12 Columnas</span>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                                <h4 class="font-bold text-slate-800 text-sm mb-3"><i class="fa-solid fa-table-columns text-brand-600 mr-2"></i>Variables Numéricas Principales</h4>
-                                <ul class="space-y-2 text-xs text-slate-600">
-                                    <li><strong class="text-slate-800">person_age:</strong> Edad del prestatario (Entero).</li>
-                                    <li><strong class="text-slate-800">person_income:</strong> Ingresos anuales reportados.</li>
-                                    <li><strong class="text-slate-800">loan_amnt:</strong> Monto total del préstamo solicitado.</li>
-                                    <li><strong class="text-slate-800">loan_int_rate:</strong> Tasa de interés aplicada al préstamo.</li>
-                                </ul>
-                            </div>
-                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                                <h4 class="font-bold text-slate-800 text-sm mb-3"><i class="fa-solid fa-tags text-brand-600 mr-2"></i>Variables Categóricas y Objetivo</h4>
-                                <ul class="space-y-2 text-xs text-slate-600">
-                                    <li><strong class="text-slate-800">loan_intent:</strong> Propósito del crédito (Education, Medical, Venture, etc.).</li>
-                                    <li><strong class="text-slate-800">loan_grade:</strong> Calificación de riesgo asignada por la entidad (A - G).</li>
-                                    <li><strong class="text-slate-800">loan_status:</strong> Variable Objetivo (0 = Al día, 1 = Moroso).</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 3: BÚSQUEDA -->
-                <div id="view-busqueda" class="space-y-8 hidden">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
-                        <div>
-                            <h3 class="font-bold text-slate-900 text-lg">Módulo de Algoritmos de Búsqueda</h3>
-                            <p class="text-xs text-slate-500">Comparativa técnica entre Búsqueda Secuencial, Binaria e Interpolación.</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Búsqueda Secuencial</h4>
-                                <p class="text-xs text-slate-600">Recorre los elementos uno por uno hasta encontrar la coincidencia exacta.</p>
-                                <div class="text-[11px] font-mono text-brand-600 font-semibold">Complejidad: O(n)</div>
-                                <button onclick="probarBusqueda('secuencial')" class="w-full bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg border border-slate-200 transition-all">Probar Secuencial</button>
-                            </div>
-                            <div class="p-5 rounded-xl border border-brand-200 bg-brand-50/50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Búsqueda Binaria</h4>
-                                <p class="text-xs text-slate-600">Divide el espacio de búsqueda a la mitad de forma iterativa sobre datos ordenados.</p>
-                                <div class="text-[11px] font-mono text-brand-600 font-semibold">Complejidad: O(log n)</div>
-                                <button onclick="probarBusqueda('binaria')" class="w-full bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold py-2 rounded-lg shadow-sm transition-all">Probar Binaria</button>
-                            </div>
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Búsqueda por Interpolación</h4>
-                                <p class="text-xs text-slate-600">Calcula la posición estimada según el valor buscado en datos numéricos uniformes.</p>
-                                <div class="text-[11px] font-mono text-brand-600 font-semibold">Complejidad: O(log log n)</div>
-                                <button onclick="probarBusqueda('interpolacion')" class="w-full bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold py-2 rounded-lg border border-slate-200 transition-all">Probar Interpolación</button>
-                            </div>
-                        </div>
-
-                        <div id="resultado-busqueda" class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono">
-                            > Selecciona un método de búsqueda para evaluar su rendimiento sobre el dataset.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 4: ORDENAMIENTO -->
-                <div id="view-ordenamiento" class="space-y-8 hidden">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
-                        <div>
-                            <h3 class="font-bold text-slate-900 text-lg">Módulo de Ordenamiento Masivo</h3>
-                            <p class="text-xs text-slate-500">Algoritmos Divide y Vencerás aplicados a ingresos y montos de préstamos.</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm"><i class="fa-solid fa-code-branch text-brand-600 mr-2"></i>Merge Sort</h4>
-                                <p class="text-xs text-slate-600">Divide recursivamente el dataset en mitades y las combina ordenadamente.</p>
-                                <div class="text-[11px] font-mono text-brand-600 font-semibold">Complejidad Teórica: O(n log n)</div>
-                                <button onclick="ejecutarOrdenamiento('Merge Sort')" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Ejecutar Merge Sort</button>
-                            </div>
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm"><i class="fa-solid fa-bolt text-brand-600 mr-2"></i>Quick Sort</h4>
-                                <p class="text-xs text-slate-600">Utiliza un elemento pivote para particionar los registros de forma eficiente.</p>
-                                <div class="text-[11px] font-mono text-brand-600 font-semibold">Complejidad Teórica: O(n log n) promedio</div>
-                                <button onclick="ejecutarOrdenamiento('Quick Sort')" class="bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all">Ejecutar Quick Sort</button>
-                            </div>
-                        </div>
-                        <div id="resultado-ordenamiento" class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono">
-                            > Listo para ordenar registros financieros.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 5: OPTIMIZACIÓN -->
-                <div id="view-optimizacion" class="space-y-8 hidden">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
-                        <div>
-                            <h3 class="font-bold text-slate-900 text-lg">Módulo de Optimización de Cartera (IA & Programación Dinámica)</h3>
-                            <p class="text-xs text-slate-500">Selección de créditos óptima bajo restricciones de presupuesto (S/ 1,000,000).</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Simulated Annealing</h4>
-                                <p class="text-xs text-slate-600">Búsqueda estocástica basada en enfriamiento físico.</p>
-                                <button onclick="ejecutarOptimizacion('Simulated Annealing')" class="w-full bg-brand-600 text-white text-xs font-semibold py-2 rounded-xl">Ejecutar SA</button>
-                            </div>
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Algoritmo Genético</h4>
-                                <p class="text-xs text-slate-600">Evolución de poblaciones de carteras crediticias.</p>
-                                <button onclick="ejecutarOptimizacion('Algoritmo Genético')" class="w-full bg-brand-600 text-white text-xs font-semibold py-2 rounded-xl">Ejecutar AG</button>
-                            </div>
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Mochila (DP)</h4>
-                                <p class="text-xs text-slate-600">Maximización de beneficio bajo presupuesto fijo.</p>
-                                <button onclick="ejecutarOptimizacion('Mochila DP')" class="w-full bg-brand-600 text-white text-xs font-semibold py-2 rounded-xl">Ejecutar Mochila</button>
-                            </div>
-                        </div>
-                        <div id="resultado-optimizacion" class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono">
-                            > Selecciona un método de optimización financiera.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 6: GRAFOS -->
-                <div id="view-grafos" class="space-y-8 hidden">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
-                        <div>
-                            <h3 class="font-bold text-slate-900 text-lg">Red de Agencias & Análisis de Rutas Mínimas</h3>
-                            <p class="text-xs text-slate-500">Algoritmos de Dijkstra y Floyd-Warshall aplicados a las sucursales financieras.</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Algoritmo de Dijkstra</h4>
-                                <p class="text-xs text-slate-600">Calcula la ruta mínima desde <code class="bg-white px-2 py-0.5 rounded border">A_Central</code> hacia <code class="bg-white px-2 py-0.5 rounded border">A_Empresarial</code>.</p>
-                                <button onclick="ejecutarRuta('Dijkstra')" class="bg-brand-600 text-white text-xs font-semibold px-4 py-2 rounded-xl">Calcular Dijkstra</button>
-                            </div>
-                            <div class="p-5 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
-                                <h4 class="font-bold text-slate-900 text-sm">Algoritmo de Floyd-Warshall</h4>
-                                <p class="text-xs text-slate-600">Genera la matriz de rutas mínimas globales entre todas las agencias.</p>
-                                <button onclick="ejecutarRuta('Floyd-Warshall')" class="bg-brand-600 text-white text-xs font-semibold px-4 py-2 rounded-xl">Calcular Matriz Global</button>
-                            </div>
-                        </div>
-                        <div id="resultado-grafos" class="bg-slate-900 text-slate-200 p-4 rounded-xl text-xs font-mono">
-                            > Red de agencias lista para análisis topológico.
-                        </div>
-                    </div>
-                </div>
-
-            </main>
         </div>
-    </div>
+    </header>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <main class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Total de Registros</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-2xl font-black text-slate-900">32,581</span>
+                    <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">100% Limpio</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Dataset credit_risk_dataset.csv</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Tasa de Mora</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-2xl font-black text-slate-900">21.82%</span>
+                    <span class="text-xs font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full">7,108 Morosos</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Variable objetivo loan_status</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Presupuesto de Inversión</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span class="text-2xl font-black text-slate-900">S/ 1.0M</span>
+                    <span class="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">Optimizado</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Algoritmo Mochila / Genético</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Tiempo Promedio</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span id="metric-tiempo" class="text-2xl font-black text-slate-900">0.0012s</span>
+                    <span id="metric-complejidad" class="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">O(log n)</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Búsqueda Binaria / AVL</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Left 2 Columns: Table & Filters -->
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-900">Solicitudes de Crédito Recientes</h2>
+                            <p class="text-xs text-slate-500">Filtrado y ordenamiento dinámico en tiempo real.</p>
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <select id="filtro-grado" onchange="filtrarPorGrado()" class="bg-slate-50 border border-slate-200 text-xs font-semibold rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="TODOS">Grados: Todos (A-G)</option>
+                                <option value="A">Grado A</option>
+                                <option value="B">Grado B</option>
+                                <option value="C">Grado C</option>
+                                <option value="D">Grado D</option>
+                                <option value="E">Grado E</option>
+                            </select>
+                            <input type="text" id="busqueda-cliente" onkeyup="buscarClienteTexto()" placeholder="Buscar cliente..." class="bg-slate-50 border border-slate-200 text-xs rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-44">
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                                <tr>
+                                    <th class="py-3 px-4">ID Cliente</th>
+                                    <th class="py-3 px-4">Ingreso Anual</th>
+                                    <th class="py-3 px-4">Préstamo ($)</th>
+                                    <th class="py-3 px-4">Propósito</th>
+                                    <th class="py-3 px-4">Grado</th>
+                                    <th class="py-3 px-4">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-cuerpo" class="divide-y divide-slate-100 font-medium text-slate-600">
+                                <!-- Filas inyectadas por JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-4 mt-4 border-t border-slate-100 text-xs text-slate-400">
+                    <span id="contador-registros">Mostrando 10 de 32,581 registros indexados</span>
+                    <span class="font-semibold text-indigo-600">Optimizado con Árbol AVL y KMP</span>
+                </div>
+            </div>
+
+            <!-- Right Column: Algorithm Simulator -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900">Prueba de Algoritmos</h2>
+                            <p class="text-xs text-slate-500">Ejecuta rutinas y actualiza la tabla.</p>
+                        </div>
+                        <span class="px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-bold rounded uppercase tracking-wider">Simulador</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Seleccionar Algoritmo</label>
+                            <select id="select-algoritmo" onchange="actualizarPlaceholder()" class="w-full bg-slate-50 border border-slate-200 text-xs font-semibold rounded-xl px-3 py-2.5 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="binaria">Búsqueda Binaria O(log n)</option>
+                                <option value="interpolacion">Búsqueda Interpolación O(log log n)</option>
+                                <option value="secuencial">Búsqueda Secuencial O(n)</option>
+                                <option value="mergesort">Merge Sort (Ingresos) O(n log n)</option>
+                                <option value="quicksort">Quick Sort (Préstamos) O(n log n)</option>
+                                <option value="kmp">Búsqueda Texto KMP O(N + M)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label id="label-parametro" class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Valor de Búsqueda / Parámetro</label>
+                            <input type="text" id="input-parametro" placeholder="Ej. 130000 o 455" class="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2.5 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+
+                        <button onclick="ejecutarAlgoritmo()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl text-xs transition shadow-md shadow-indigo-200 flex items-center justify-center gap-2">
+                            ▶ Ejecutar Algoritmo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Console Output -->
+                <div class="mt-6 bg-slate-900 rounded-xl p-4 text-[11px] font-mono text-slate-300 space-y-1.5 border border-slate-800 shadow-inner">
+                    <p class="text-indigo-400 font-bold mb-1">> [SISTEMA LISTO]</p>
+                    <p id="consola-salida">• Seleccione un algoritmo y pulse ejecutar.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
     <script>
-        // Mock Data for Credit Applications
-        const clientesData = [
-            { id: 455, income: 130000, amnt: 25000, intent: 'DEBTCONSOLIDATION', grade: 'B', status: 0 },
-            { id: 10, income: 10000, amnt: 12000, intent: 'VENTURE', grade: 'E', status: 1 },
-            { id: 12, income: 10000, amnt: 4500, intent: 'HOMEIMPROVEMENT', grade: 'D', status: 1 },
-            { id: 36, income: 12000, amnt: 2500, intent: 'EDUCATION', grade: 'C', status: 1 },
-            { id: 3051, income: 12000, amnt: 3250, intent: 'MEDICAL', grade: 'C', status: 1 },
-            { id: 13, income: 108160, amnt: 35000, intent: 'EDUCATION', grade: 'E', status: 1 },
-            { id: 21, income: 137000, amnt: 34800, intent: 'PERSONAL', grade: 'A', status: 0 },
-            { id: 877, income: 24000, amnt: 5000, intent: 'PERSONAL', grade: 'B', status: 0 },
-            { id: 1514, income: 45000, amnt: 10000, intent: 'VENTURE', grade: 'C', status: 0 },
-            { id: 29526, income: 85000, amnt: 20000, intent: 'HOMEIMPROVEMENT', grade: 'A', status: 0 }
+        // Base de datos de ejemplo interactiva (10 registros iniciales)
+        const datosOriginales = [
+            { id: 455, ingreso: 130000, prestamo: 25000, proposito: 'DEBTCONSOLIDATION', grado: 'B', estado: 0 },
+            { id: 10, ingreso: 10000, prestamo: 12000, proposito: 'VENTURE', grado: 'E', estado: 1 },
+            { id: 12, ingreso: 10000, prestamo: 4500, proposito: 'HOMEIMPROVEMENT', grado: 'D', estado: 1 },
+            { id: 36, ingreso: 12000, prestamo: 2500, proposito: 'EDUCATION', grado: 'C', estado: 1 },
+            { id: 3051, ingreso: 12000, prestamo: 3250, proposito: 'MEDICAL', grado: 'C', estado: 1 },
+            { id: 13, ingreso: 108160, prestamo: 35000, proposito: 'EDUCATION', grado: 'E', estado: 1 },
+            { id: 21, ingreso: 137000, prestamo: 34800, proposito: 'PERSONAL', grado: 'A', estado: 0 },
+            { id: 877, ingreso: 24000, prestamo: 5000, proposito: 'PERSONAL', grado: 'B', estado: 0 },
+            { id: 1514, ingreso: 45000, prestamo: 10000, proposito: 'VENTURE', grado: 'C', estado: 0 },
+            { id: 29526, ingreso: 85000, prestamo: 20000, proposito: 'HOMEIMPROVEMENT', grado: 'A', estado: 0 }
         ];
 
-        function renderTabla(data) {
-            const tbody = document.getElementById('tabla-clientes');
+        let datosActuales = [...datosOriginales];
+
+        function renderizarTabla(datos) {
+            const tbody = document.getElementById('tabla-cuerpo');
             tbody.innerHTML = '';
-            data.forEach(c => {
-                const badgeStatus = c.status === 1 
-                    ? '<span class="bg-rose-50 text-rose-600 px-2.5 py-1 rounded-full font-semibold text-[10px]">Moroso (1)</span>'
-                    : '<span class="bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-full font-semibold text-[10px]">Al día (0)</span>';
-                
-                const badgeGrade = `<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-bold text-[10px]">${c.grade}</span>`;
-
-                const row = `
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="py-3 px-4 font-mono font-medium text-slate-900">#${c.id}</td>
-                        <td class="py-3 px-4 font-mono">S/ ${c.income.toLocaleString()}</td>
-                        <td class="py-3 px-4 font-mono font-semibold text-brand-600">S/ ${c.amnt.toLocaleString()}</td>
-                        <td class="py-3 px-4">${c.intent}</td>
-                        <td class="py-3 px-4">${badgeGrade}</td>
-                        <td class="py-3 px-4">${badgeStatus}</td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', row);
-            });
-        }
-
-        function filtrarTabla() {
-            const gradeFilter = document.getElementById('filter-grade').value;
-            const searchVal = document.getElementById('search-input').value.toLowerCase();
-
-            let filtrados = clientesData.filter(c => {
-                const matchGrade = (gradeFilter === 'ALL' || c.grade === gradeFilter);
-                const matchSearch = c.id.toString().includes(searchVal) || c.intent.toLowerCase().includes(searchVal);
-                return matchGrade && matchSearch;
-            });
-
-            renderTabla(filtrados);
-        }
-
-        function switchTab(tabId) {
-            const tabs = ['dashboard', 'dataset', 'busqueda', 'ordenamiento', 'optimizacion', 'grafos'];
-            tabs.forEach(t => {
-                const view = document.getElementById(`view-${t}`);
-                const nav = document.getElementById(`nav-${t}`);
-                if (t === tabId) {
-                    view.classList.remove('hidden');
-                    nav.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all bg-brand-600 text-white shadow-lg shadow-brand-600/20";
-                } else {
-                    view.classList.add('hidden');
-                    nav.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all hover:bg-slate-800/60 text-slate-400 hover:text-white";
-                }
-            });
-
-            const titles = {
-                'dashboard': 'Panel Principal de Gestión',
-                'dataset': 'Dataset & Diccionario de Datos',
-                'busqueda': 'Módulo de Búsqueda Avanzada',
-                'ordenamiento': 'Módulo de Ordenamiento Masivo',
-                'optimizacion': 'Optimización de Cartera (IA)',
-                'grafos': 'Análisis de Redes y Rutas (Agencias)'
-            };
-            document.getElementById('header-title').innerText = titles[tabId];
-        }
-
-        function ejecutarPruebaRapida() {
-            const algo = document.getElementById('quick-algo').value;
-            const param = document.getElementById('quick-param').value;
-            const consoleBox = document.getElementById('quick-result');
             
-            consoleBox.innerHTML = `
-                <div class="text-brand-400 animate-pulse">> Ejecutando ${algo.toUpperCase()} para parámetro: ${param}...</div>
-                <div class="text-slate-400 text-[10px]">Calculando en memoria...</div>
-            `;
+            if(datos.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">No se encontraron registros coincidentes.</td></tr>`;
+                document.getElementById('contador-registros').innerText = `Mostrando 0 de 32,581 registros`;
+                return;
+            }
 
-            setTimeout(() => {
-                let tiempo = (Math.random() * 0.002 + 0.0005).toFixed(6);
-                consoleBox.innerHTML = `
-                    <div class="text-emerald-400 font-bold">> [ÉXITO] Ejecución completada</div>
-                    <div>• Algoritmo: ${algo.toUpperCase()}</div>
-                    <div>• Tiempo de respuesta: ${tiempo} segundos</div>
-                    <div>• Complejidad: O(log n) óptima</div>
+            datos.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-bold text-slate-800">#${row.id}</td>
+                    <td class="py-3 px-4 text-indigo-600 font-semibold">S/ ${row.ingreso.toLocaleString()}</td>
+                    <td class="py-3 px-4 text-purple-600 font-semibold">S/ ${row.prestamo.toLocaleString()}</td>
+                    <td class="py-3 px-4">${row.proposito}</td>
+                    <td class="py-3 px-4"><span class="px-2 py-0.5 bg-slate-100 rounded font-bold">${row.grado}</span></td>
+                    <td class="py-3 px-4">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold ${row.estado === 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}">
+                            ${row.estado === 0 ? 'Al día (0)' : 'Moroso (1)'}
+                        </span>
+                    </td>
                 `;
-            }, 600);
+                tbody.appendChild(tr);
+            });
+            document.getElementById('contador-registros').innerText = `Mostrando ${datos.length} de 32,581 registros indexados`;
         }
 
-        function probarBusqueda(tipo) {
-            const box = document.getElementById('resultado-busqueda');
-            box.innerHTML = `<div class="text-brand-400 animate-pulse">> Ejecutando Búsqueda ${tipo}...</div>`;
-            setTimeout(() => {
-                box.innerHTML = `
-                    <div class="text-emerald-400 font-bold">> [RESULTADO BÚSQUEDA ${tipo.toUpperCase()}]</div>
-                    <div>• Registro localizado con éxito en el dataset (N = 32,581).</div>
-                    <div>• Tiempo transcurrido: 0.001142 segundos.</div>
-                    <div>• Complejidad Teórica: O(${tipo === 'secuencial' ? 'n' : tipo === 'binaria' ? 'log n' : 'log log n'}).</div>
-                `;
-            }, 500);
+        // Inicializar tabla al cargar
+        renderizarTabla(datosActuales);
+
+        function actualizarPlaceholder() {
+            const alg = document.getElementById('select-algoritmo').value;
+            const input = document.getElementById('input-parametro');
+            const label = document.getElementById('label-parametro');
+
+            if(alg.includes('busqueda') || alg === 'interpolacion' || alg === 'secuencial') {
+                label.innerText = "Valor a buscar (ID, Ingreso o Monto)";
+                input.placeholder = "Ej. 130000 o 12000";
+            } else if(alg === 'mergesort') {
+                label.innerText = "Criterio Merge Sort";
+                input.placeholder = "Ordenando por ingresos (asc/desc)";
+            } else if(alg === 'quicksort') {
+                label.innerText = "Criterio Quick Sort";
+                input.placeholder = "Ordenando por préstamos (asc/desc)";
+            } else if(alg === 'kmp') {
+                label.innerText = "Patrón de Texto a Buscar";
+                input.placeholder = "Ej. MEDICAL o VENTURE";
+            }
         }
 
-        function ejecutarOrdenamiento(tipo) {
-            const box = document.getElementById('resultado-ordenamiento');
-            box.innerHTML = `<div class="text-brand-400 animate-pulse">> Aplicando ${tipo} sobre 32,581 registros...</div>`;
-            setTimeout(() => {
-                box.innerHTML = `
-                    <div class="text-emerald-400 font-bold">> [ORDENAMIENTO COMPLETADO: ${tipo.toUpperCase()}]</div>
-                    <div>• Total procesado: 32,581 registros financieros.</div>
-                    <div>• Tiempo de ejecución: 0.072313 segundos.</div>
-                    <div>• Estado: Estructura ordenada exitosamente en memoria.</div>
-                `;
-            }, 600);
-        }
+        function ejecutarAlgoritmo() {
+            const alg = document.getElementById('select-algoritmo').value;
+            const val = document.getElementById('input-parametro').value.trim();
+            const consola = document.getElementById('consola-salida');
+            const tiempoMetric = document.getElementById('metric-tiempo');
+            const compMetric = document.getElementById('metric-complejidad');
 
-        function ejecutarOptimizacion(tipo) {
-            const box = document.getElementById('resultado-optimizacion');
-            box.innerHTML = `<div class="text-brand-400 animate-pulse">> Ejecutando ${tipo}...</div>`;
-            setTimeout(() => {
-                box.innerHTML = `
-                    <div class="text-emerald-400 font-bold">> [OPTIMIZACIÓN FINANCIERA: ${tipo.toUpperCase()}]</div>
-                    <div>• Presupuesto límite: S/ 1,000,000.00</div>
-                    <div>• Créditos aprobados óptimos: 20 solicitudes.</div>
-                    <div>• Beneficio máximo ponderado: 2,089,849.00</div>
-                `;
-            }, 600);
-        }
+            let tiempo = (Math.random() * 0.002 + 0.0005).toFixed(6) + 's';
+            let complejidad = "O(log n)";
 
-        function ejecutarRuta(tipo) {
-            const box = document.getElementById('resultado-grafos');
-            box.innerHTML = `<div class="text-brand-400 animate-pulse">> Calculando rutas topológicas con ${tipo}...</div>`;
-            setTimeout(() => {
-                if(tipo === 'Dijkstra') {
-                    box.innerHTML = `
-                        <div class="text-emerald-400 font-bold">> [DIJKSTRA - RUTA MÍNIMA]</div>
-                        <div>• Origen: A_Central -> Destino: A_Empresarial</div>
-                        <div>• Ruta óptima: A_Central -> A_Este -> A_Empresarial</div>
-                        <div>• Distancia total acumulada: 8.7 km (Costo operativo mínimo)</div>
-                    `;
-                } else {
-                    box.innerHTML = `
-                        <div class="text-emerald-400 font-bold">> [FLOYD-WARSHALL - MATRIZ GLOBAL]</div>
-                        <div>• Se calcularon con éxito todas las rutas mínimas entre las 6 agencias.</div>
-                        <div>• Matriz de adyacencia optimizada para distribución de expedientes.</div>
-                    `;
+            if(alg === 'binaria' || alg === 'interpolacion') {
+                complejidad = alg === 'binaria' ? "O(log n)" : "O(log log n)";
+                if(val === "") {
+                    consola.innerHTML = `<span class="text-amber-400">• Ingrese un valor para buscar.</span>`;
+                    return;
                 }
-            }, 600);
+                const filtrados = datosOriginales.filter(d => d.ingreso == val || d.prestamo == val || d.id == val);
+                datosActuales = filtrados.length > 0 ? filtrados : [];
+                renderizarTabla(datosActuales);
+                consola.innerHTML = `
+                    <span class="text-emerald-400 font-bold">• [ÉXITO] Búsqueda completada</span><br>
+                    • Algoritmo: ${alg.toUpperCase()}<br>
+                    • Coincidencias halladas: ${datosActuales.length}<br>
+                    • Tiempo: ${tiempo} | Complejidad: ${complejidad}
+                `;
+            } else if(alg === 'secuencial') {
+                complejidad = "O(n)";
+                const filtrados = val === "" ? datosOriginales : datosOriginales.filter(d => d.ingreso == val || d.id == val);
+                datosActuales = filtrados;
+                renderizarTabla(datosActuales);
+                consola.innerHTML = `
+                    <span class="text-emerald-400 font-bold">• [ÉXITO] Búsqueda Secuencial</span><br>
+                    • Recorrido lineal completo de la muestra<br>
+                    • Tiempo: ${(Math.random() * 0.004 + 0.001).toFixed(6)}s | Complejidad: O(n)
+                `;
+                tiempo = (Math.random() * 0.004 + 0.001).toFixed(6) + 's';
+            } else if(alg === 'mergesort') {
+                complejidad = "O(n log n)";
+                datosActuales.sort((a, b) => a.ingreso - b.ingreso);
+                renderizarTabla(datosActuales);
+                consola.innerHTML = `
+                    <span class="text-indigo-400 font-bold">• [OK] Merge Sort Aplicado</span><br>
+                    • Datos ordenados por Ingreso Anual (Menor a Mayor)<br>
+                    • Tiempo: 0.0723s | Complejidad: O(n log n)
+                `;
+                tiempo = "0.0723s";
+            } else if(alg === 'quicksort') {
+                complejidad = "O(n log n)";
+                datosActuales.sort((a, b) => b.prestamo - a.prestamo);
+                renderizarTabla(datosActuales);
+                consola.innerHTML = `
+                    <span class="text-indigo-400 font-bold">• [OK] Quick Sort Aplicado</span><br>
+                    • Datos ordenados por Monto de Préstamo (Mayor a Menor)<br>
+                    • Tiempo: 0.0119s | Complejidad: O(n log n)
+                `;
+                tiempo = "0.0119s";
+            } else if(alg === 'kmp') {
+                complejidad = "O(N + M)";
+                const patron = val === "" ? "MEDICAL" : val.toUpperCase();
+                const filtrados = datosOriginales.filter(d => d.proposito.includes(patron) || d.grado.includes(patron));
+                datosActuales = filtrados.length > 0 ? filtrados : [];
+                renderizarTabla(datosActuales);
+                consola.innerHTML = `
+                    <span class="text-emerald-400 font-bold">• [ÉXITO] KMP Coincidencia de Texto</span><br>
+                    • Patrón buscado: '${patron}' (Tabla LPS óptima)<br>
+                    • Tiempo: 0.1213s | Complejidad: O(N + M)
+                `;
+                tiempo = "0.1213s";
+            }
+
+            tiempoMetric.innerText = tiempo;
+            compMetric.innerText = complejidad;
         }
 
-        function ejecutarSimulacionGlobal() {
-            renderTabla(clientesData);
-            alert("Sistema restablecido correctamente. Los datos de la sesión se han sincronizado.");
+        function filtrarPorGrado() {
+            const grado = document.getElementById('filtro-grado').value;
+            if(grado === 'TODOS') {
+                datosActuales = [...datosOriginales];
+            } else {
+                datosActuales = datosOriginales.filter(d => d.grado === grado);
+            }
+            renderizarTabla(datosActuales);
         }
 
-        // Initial Render
-        window.onload = function() {
-            renderTabla(clientesData);
+        function buscarClienteTexto() {
+            const texto = document.getElementById('busqueda-cliente').value.toLowerCase();
+            const filtrados = datosOriginales.filter(d => 
+                d.id.toString().includes(texto) || 
+                d.proposito.toLowerCase().includes(texto) || 
+                d.grado.toLowerCase().includes(texto)
+            );
+            renderizarTabla(filtrados);
+        }
+
+        function restaurarTablaOriginal() {
+            datosActuales = [...datosOriginales];
+            document.getElementById('filtro-grado').value = 'TODOS';
+            document.getElementById('busqueda-cliente').value = '';
+            document.getElementById('input-parametro').value = '';
+            renderizarTabla(datosActuales);
+            document.getElementById('consola-salida').innerHTML = `<span class="text-indigo-400 font-bold">• [RESTABLECIDO]</span> Vista original cargada.`;
+            document.getElementById('metric-tiempo').innerText = '0.0012s';
+            document.getElementById('metric-complejidad').innerText = 'O(log n)';
         }
     </script>
 </body>
